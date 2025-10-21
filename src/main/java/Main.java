@@ -1,5 +1,7 @@
 import br.com.fiap.contatos.dao.CategoriaDao;
+import br.com.fiap.contatos.dao.ProdutoraDao;
 import br.com.fiap.contatos.model.Categoria;
+import br.com.fiap.contatos.model.Produtora;
 import br.com.fiap.contatos.utils.Conexao;
 import br.com.fiap.contatos.dao.GameDao;
 import br.com.fiap.contatos.model.Game;
@@ -11,7 +13,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         EntityManager em = Conexao.getEntityManager();
-        cadastrar(em);
+//        cadastrar(em);
 //        atualizar(em);
 //        excluir(em);
 //        consultarContatoPorId(em);
@@ -20,11 +22,27 @@ public class Main {
 //        listarGamesPorProdutora(em);
 //        listarGamesPorLancamento(em);
 //        listarGamesPorStatus(em);
-          consultarCategoriaPeloId(em);
+//        consultarCategoriaPeloId(em);
+//        consultarProdutoraPeloId(em);
+//        listarProdutoraPorNome(em);
+    }
+
+    public static void listarProdutoraPorNome(EntityManager em){
+//      Criar uma instância do Dao;
+        ProdutoraDao produtoraDao = new ProdutoraDao(em);
+
+        List<Produtora> produtoras = produtoraDao.buscarProdutoraPeloNome("Santa Monica Studio");
+
+        for (Produtora produtora : produtoras){
+            System.out.println("------------------------------");
+            System.out.println(produtoras.toString());
+            System.out.println("------------------------------");
+        }
+
+        System.out.println("Fim dos registros.....");
     }
 
     private static void consultarCategoriaPeloId(EntityManager em) {
-
         CategoriaDao categoriaDao = new CategoriaDao(em);
         Categoria categoriaBuscada = new Categoria();
         categoriaBuscada.setId(3L);
@@ -121,21 +139,29 @@ public class Main {
     }
 
     public static void cadastrar(EntityManager em){
+        Produtora produtora = new Produtora();
+        produtora.setNomeProdutora("Santa Monica Studio");
+        produtora.setCidadeProdutora("Los Angeles");
+
+        ProdutoraDao produtoraDao = new ProdutoraDao(em);
+        em.getTransaction().begin();
+
+        produtoraDao.salvar(produtora);
+
+
         Categoria categoria = new Categoria();
-        categoria.setId(3L);
-//        categoria.setNomeCategoria("Ação");
+        categoria.setNomeCategoria("Ação");
 
         CategoriaDao categoriaDao = new CategoriaDao(em);
 
-        em.getTransaction().begin();
-//        categoriaDao.salvar(categoria);
+        categoriaDao.salvar(categoria);
 
         Game game1 = new Game();
-        game1.setTitulo("Assasins Creed Black Flag");
-        game1.setDataLancamento(LocalDate.of(2014,1, 5));
+        game1.setTitulo("God Of War II");
+        game1.setDataLancamento(LocalDate.of(2007,3, 13));
         game1.setFinalizado(true);
-        game1.setProdutora("Ubisoft");
-        game1.setValor(180.00);
+        game1.setProdutora(produtora);
+        game1.setValor(250.00);
         game1.setCategoria(categoria);
 
 
@@ -147,6 +173,13 @@ public class Main {
     }
 
     public static void atualizar(EntityManager em){
+        Produtora produtora = new Produtora();
+        produtora.setNomeProdutora("EA");
+        produtora.setCidadeProdutora("Montreuil");
+
+        ProdutoraDao produtoraDao = new ProdutoraDao(em);
+        produtoraDao.salvar(produtora);
+
         Categoria categoria = new Categoria();
         categoria.setNomeCategoria("Ação");
 
@@ -156,7 +189,7 @@ public class Main {
         game1.setTitulo("Farcry 4");
         game1.setDataLancamento(LocalDate.of(2014, 6, 10));
         game1.setFinalizado(true);
-        game1.setProdutora("EA");
+        game1.setProdutora(produtora);
         game1.setValor(200.00);
         game1.setCategoria(categoria);
         GameDao gameDao = new GameDao(em);
@@ -178,7 +211,7 @@ public class Main {
         em.getTransaction().commit();
     }
 
-    public static void consultarContatoPorId(EntityManager em){
+    public static void consultarGamePorId(EntityManager em){
         GameDao gameDao = new GameDao(em);
 
         em.getTransaction().begin();
@@ -186,4 +219,16 @@ public class Main {
         em.getTransaction().commit();
     }
 
+
+    public static void consultarProdutoraPeloId(EntityManager em){
+        ProdutoraDao produtoraDao = new ProdutoraDao(em);
+        Produtora produtoraProcurada = new Produtora();
+        produtoraProcurada.setId(1L);
+
+        Produtora produtoraEncontrada = new Produtora();
+        produtoraEncontrada = produtoraDao.buscarProdutoraPeloId(produtoraProcurada);
+
+        System.out.println(produtoraEncontrada.getId());
+        System.out.println(produtoraEncontrada.getGame());
+    }
 }

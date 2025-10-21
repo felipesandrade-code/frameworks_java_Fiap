@@ -22,12 +22,15 @@ public class Game {
     private LocalDate dataLancamento;
 
     private Double valor;
-    private String produtora;
     private Boolean finalizado;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "produtora_id")
+    private Produtora produtora;
 
     @Override
     public String toString() {
@@ -36,9 +39,9 @@ public class Game {
                 ", titulo='" + this.titulo + '\'' +
                 ", dataLancamento=" + this.dataLancamento +
                 ", valor=" + this.valor +
-                ", produtora='" + this.produtora + '\'' +
                 ", finalizado=" + this.finalizado +
-                ", categoria=" + this.categoria +
+                ", categoria=" + categoria.getNomeCategoria() +
+                ", produtora=" + produtora.getNomeProdutora() +
                 '}';
     }
 
@@ -75,11 +78,11 @@ public class Game {
         this.valor = valor;
     }
 
-    public String getProdutora() {
+    public Produtora getProdutora() {
         return produtora;
     }
 
-    public void setProdutora(String produtora) {
+    public void setProdutora(Produtora produtora) {
         this.produtora = produtora;
     }
 

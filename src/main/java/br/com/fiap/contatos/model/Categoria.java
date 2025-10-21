@@ -47,11 +47,4 @@ public class Categoria {
         this.games = games;
     }
 
-    @Override
-    public String toString() {
-        return "Categoria{" +
-                "id=" + id +
-                ", nomeCategoria='" + nomeCategoria + '\'' +
-                '}';
-    }
 }
