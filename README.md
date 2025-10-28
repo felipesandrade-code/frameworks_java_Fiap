@@ -10,7 +10,7 @@ O foco está no contexto de frameworks Java voltados para persistência de dados
 - Hibernate ORM como provedor de persistência  
 - Maven como sistema de build (arquivo `pom.xml` incluído)  
 - Estrutura de projeto seguindo padrão Maven (`src/main/java`, etc)  
-- (Banco de dados usado — *você pode especificar: H2, PostgreSQL, MySQL, etc.*)
+- (Banco de dados usado — *Oralce Database*)
 
 ## 📁 Estrutura do Projeto  
 /
@@ -22,18 +22,21 @@ O foco está no contexto de frameworks Java voltados para persistência de dados
 ├── pom.xml # definições do Maven
 └── .gitignore
 
-
 ## 🍃 Funcionalidades e Conceitos Aplicados  
 - Mapeamento de entidades com anotações JPA (`@Entity`, `@Table`, `@Id`, `@GeneratedValue`, etc.)  
-- Configuração de provedor de persistência (Hibernate) no `persistence.xml` ou via `application.properties` (se aplicável)  
+- Configuração de provedor de persistência (Hibernate) no `persistence.xml`  
 - Gerenciamento de transações utilizando `EntityManager` e `EntityTransaction`  
 - Consultas com JPQL (ex.: `SELECT`, `UPDATE`, `DELETE`) para manipulação dos dados  
-- Exemplo de uso: _(adicione ou substitua pelos exemplos reais destacados no seu código)_  
+- Exemplo de uso: 
   ```java
-  String jpql = "SELECT e FROM Employee e WHERE e.department = :dept";
-  List<Employee> list = em.createQuery(jpql, Employee.class)
-                          .setParameter("dept", "TI")
-                          .getResultList();
+    public List<Game> listarGamesPorId(long idProcurado){
+        //SELECT g FROM Game g WHERE ID = ????
+        String consulta = "SELECT g FROM Game g WHERE id = :id";
+
+        return em.createQuery(consulta, Game.class)
+                .setParameter("id", idProcurado)
+                .getResultList();
+    }
 
 ## 🚀 Como Executar
 
